@@ -1,91 +1,91 @@
-# Franqueado API — Inventário de Produtos (Boticário)
+# Franqueado API â€” InventÃ¡rio de Produtos
 
-API REST para **gestão de inventário de franqueados**, focada em **produtos** e **estoque** (entradas/saídas), com **auditoria de movimentações** e **controle de concorrência otimista**.  
-Projeto desenvolvido em **.NET 10**, seguindo boas práticas de **Clean Code**, **arquitetura em camadas** e **CQRS**.
+API REST para **gestÃ£o de inventÃ¡rio de franqueados**, focada em **produtos** e **estoque** (entradas/saÃ­das), com **auditoria de movimentaÃ§Ãµes** e **controle de concorrÃªncia otimista**.  
+Projeto desenvolvido em **.NET 10**, seguindo boas prÃ¡ticas de **Clean Code**, **arquitetura em camadas** e **CQRS**.
 
 ---
 
-## Visão geral
+## VisÃ£o geral
 
 Esta API permite:
 
-- **Cadastro e manutenção de produtos** (CRUD)
-- **Consulta de produtos** com paginação, busca e ordenação
-- **Gestão de estoque por franqueado e produto**
-- **Movimentações de estoque** (entrada/saída) com **auditoria**
-- **Histórico de movimentações** com paginação e filtro por período
-- **Concorrência otimista** via `RowVersion` para evitar conflitos em atualizações simultâneas
+- **Cadastro e manutenÃ§Ã£o de produtos** (CRUD)
+- **Consulta de produtos** com paginaÃ§Ã£o, busca e ordenaÃ§Ã£o
+- **GestÃ£o de estoque por franqueado e produto**
+- **MovimentaÃ§Ãµes de estoque** (entrada/saÃ­da) com **auditoria**
+- **HistÃ³rico de movimentaÃ§Ãµes** com paginaÃ§Ã£o e filtro por perÃ­odo
+- **ConcorrÃªncia otimista** via `RowVersion` para evitar conflitos em atualizaÃ§Ãµes simultÃ¢neas
 
 ---
 
 ## Arquitetura
 
-A solução está organizada em camadas:
+A soluÃ§Ã£o estÃ¡ organizada em camadas:
 
 - **Franqueado.Api**  
-  Controllers, contratos HTTP, middlewares e configuração de DI
+  Controllers, contratos HTTP, middlewares e configuraÃ§Ã£o de DI
 
 - **Franqueado.Application**  
-  Casos de uso (CQRS com Commands/Queries), validações, behaviors e abstrações
+  Casos de uso (CQRS com Commands/Queries), validaÃ§Ãµes, behaviors e abstraÃ§Ãµes
 
 - **Franqueado.Domain**  
-  Entidades, enums, exceções e interfaces de repositórios (regras de negócio)
+  Entidades, enums, exceÃ§Ãµes e interfaces de repositÃ³rios (regras de negÃ³cio)
 
 - **Franqueado.Infra**  
-  Persistência (EF Core + SQL Server), implementações de repositórios, migrations e serviços de infraestrutura
+  PersistÃªncia (EF Core + SQL Server), implementaÃ§Ãµes de repositÃ³rios, migrations e serviÃ§os de infraestrutura
 
 
-> Organização por **feature folder**: cada command/query fica em sua própria pasta (`Command`, `Handler`, `Validator`).
+> OrganizaÃ§Ã£o por **feature folder**: cada command/query fica em sua prÃ³pria pasta (`Command`, `Handler`, `Validator`).
 
 ---
 
-## Tecnologias e padrões
+## Tecnologias e padrÃµes
 
 - **.NET 10**
 - **ASP.NET Core Web API**
 - **Entity Framework Core + SQL Server** (migrations)
 - **CQRS** com **MediatR**
 - **FluentValidation** + Pipeline Behavior
-- **Swagger** (documentação e testes)
-- **Auditoria de estoque** com tabela de movimentações
-- **Concorrência otimista** com `RowVersion` (SQL Server `rowversion`)
+- **Swagger** (documentaÃ§Ã£o e testes)
+- **Auditoria de estoque** com tabela de movimentaÃ§Ãµes
+- **ConcorrÃªncia otimista** com `RowVersion` (SQL Server `rowversion`)
 
 ---
 
 ## Regras importantes
 
-### SKU único
-O `SKU` do produto é **único** (unique index no banco).
+### SKU Ãºnico
+O `SKU` do produto Ã© **Ãºnico** (unique index no banco).
 
 ### Estoque por Franqueado + Produto
-A tabela de estoque possui **restrição única** para o par:
+A tabela de estoque possui **restriÃ§Ã£o Ãºnica** para o par:
 
 - `(FranqueadoId, ProdutoId)`
 
-### Concorrência (RowVersion)
-Atualizações de estoque exigem `RowVersion` para evitar race conditions:
+### ConcorrÃªncia (RowVersion)
+AtualizaÃ§Ãµes de estoque exigem `RowVersion` para evitar race conditions:
 
-- Você deve obter o estoque via `GET` e usar o `rowVersion` retornado no `PUT`
+- VocÃª deve obter o estoque via `GET` e usar o `rowVersion` retornado no `PUT`
 - Se o `rowVersion` estiver desatualizado, a API retorna **409 (Conflict)**
 
-### Auditoria de movimentações
-Entradas/saídas geram registros em `MovimentacoesEstoque` com:
+### Auditoria de movimentaÃ§Ãµes
+Entradas/saÃ­das geram registros em `MovimentacoesEstoque` com:
 
 - tipo (Entrada/Saida)
 - quantidade
 - motivo
-- usuário
+- usuÃ¡rio
 - data/hora
 
 ---
 
 ## Como executar
 
-### Pré-requisitos
+### PrÃ©-requisitos
 - .NET SDK 10 instalado
-- SQL Server disponível (local ou remoto)
+- SQL Server disponÃ­vel (local ou remoto)
 
-### Configuração
+### ConfiguraÃ§Ã£o
 Edite `Franqueado.Api/appsettings.json`:
 
 ```json
