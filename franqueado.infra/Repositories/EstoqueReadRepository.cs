@@ -16,7 +16,7 @@ public sealed class EstoqueReadRepository : IEstoqueReadRepository
         return _db.Estoques
             .AsNoTracking()
             .Where(e => e.FranqueadoId == franqueadoId && e.ProdutoId == produtoId)
-            .Select(e => new EstoqueItemDto(e.Id, e.FranqueadoId, e.ProdutoId, e.Quantidade))
+            .Select(e => new EstoqueItemDto(e.Id, e.FranqueadoId, e.ProdutoId, e.Quantidade, Convert.ToBase64String(e.RowVersion)))
             .FirstOrDefaultAsync(ct);
     }
 
@@ -43,7 +43,7 @@ public sealed class EstoqueReadRepository : IEstoqueReadRepository
             .OrderBy(e => e.ProdutoId)
             .Skip(skip)
             .Take(pageSize)
-            .Select(e => new EstoqueItemDto(e.Id, e.FranqueadoId, e.ProdutoId, e.Quantidade))
+            .Select(e => new EstoqueItemDto(e.Id, e.FranqueadoId, e.ProdutoId, e.Quantidade, Convert.ToBase64String(e.RowVersion)))
             .ToListAsync(ct);
     }
 

@@ -4,5 +4,7 @@ public sealed record EstoqueItemDto(
     Guid Id,
     Guid FranqueadoId,
     Guid ProdutoId,
-    int Quantidade
+    int Quantidade,
+    string RowVersion
 );
+

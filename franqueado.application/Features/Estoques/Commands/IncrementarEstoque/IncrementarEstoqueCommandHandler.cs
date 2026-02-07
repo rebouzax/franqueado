@@ -11,12 +11,14 @@ public sealed class IncrementarEstoqueCommandHandler : IRequestHandler<Increment
     private readonly IEstoqueRepository _repo;
     private readonly IMovimentacaoEstoqueRepository _movRepo;
     private readonly IUnitOfWork _uow;
+    private readonly ICurrentUser _currentUser;
 
-    public IncrementarEstoqueCommandHandler(IEstoqueRepository repo, IMovimentacaoEstoqueRepository movRepo, IUnitOfWork uow)
+    public IncrementarEstoqueCommandHandler(IEstoqueRepository repo, IMovimentacaoEstoqueRepository movRepo, IUnitOfWork uow, ICurrentUser currentUser)
     {
         _repo = repo;
         _movRepo = movRepo;
         _uow = uow;
+        _currentUser = currentUser;
     }
 
     public async Task Handle(IncrementarEstoqueCommand request, CancellationToken ct)
@@ -40,7 +42,8 @@ public sealed class IncrementarEstoqueCommandHandler : IRequestHandler<Increment
             TipoMovimentacaoEstoque.Entrada,
             request.Quantidade,
             motivo: request.Motivo,
-            usuario: request.Usuario);
+            usuario: _currentUser.Username);
+
 
         await _movRepo.AddAsync(mov, ct);
 

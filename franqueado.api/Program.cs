@@ -1,5 +1,7 @@
+using Franqueado.Api.DependencyInjection;
 using Franqueado.Api.Middlewares;
 using Franqueado.Application;
+using Franqueado.Application.Abstractions;
 using Franqueado.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 builder.Services
     .AddApplication()

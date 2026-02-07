@@ -12,11 +12,14 @@ public sealed class DecrementarEstoqueCommandHandler : IRequestHandler<Decrement
     private readonly IMovimentacaoEstoqueRepository _movRepo;
     private readonly IUnitOfWork _uow;
 
-    public DecrementarEstoqueCommandHandler(IEstoqueRepository repo, IMovimentacaoEstoqueRepository movRepo, IUnitOfWork uow)
+    private readonly ICurrentUser _currentUser;
+
+    public DecrementarEstoqueCommandHandler(IEstoqueRepository repo, IMovimentacaoEstoqueRepository movRepo, IUnitOfWork uow, ICurrentUser currentUser)
     {
         _repo = repo;
         _movRepo = movRepo;
         _uow = uow;
+        _currentUser = currentUser;
     }
 
     public async Task Handle(DecrementarEstoqueCommand request, CancellationToken ct)
@@ -29,10 +32,11 @@ public sealed class DecrementarEstoqueCommandHandler : IRequestHandler<Decrement
         var mov = new MovimentacaoEstoque(
             request.FranqueadoId,
             request.ProdutoId,
-            TipoMovimentacaoEstoque.Saida,
+            TipoMovimentacaoEstoque.Entrada,
             request.Quantidade,
             motivo: request.Motivo,
-            usuario: request.Usuario);
+            usuario: _currentUser.Username);
+
 
         await _movRepo.AddAsync(mov, ct);
 

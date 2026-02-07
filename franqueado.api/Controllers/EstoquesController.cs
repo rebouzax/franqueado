@@ -1,6 +1,8 @@
-﻿using franqueado.application.Features.Estoques.Commands.DefinirEstoque;
+﻿using franqueado.application.Features.Estoques.Queries.ListarMovimentacoes;
+using Franqueado.Api.Contracts.Estoques;
 using Franqueado.Application.Abstractions.Repositories;
 using Franqueado.Application.Features.Estoques.Commands.DecrementarEstoque;
+using Franqueado.Application.Features.Estoques.Commands.DefinirEstoque;
 using Franqueado.Application.Features.Estoques.Commands.IncrementarEstoque;
 using Franqueado.Application.Features.Estoques.Queries.ListarEstoques;
 using Franqueado.Application.Features.Estoques.Queries.ListarEstoquesComProduto;
@@ -30,9 +32,13 @@ public sealed class EstoquesController : ControllerBase
     }
 
     [HttpPut("{franqueadoId:guid}/{produtoId:guid}")]
-    public async Task<IActionResult> Definir(Guid franqueadoId, Guid produtoId, [FromBody] int quantidade, CancellationToken ct)
+    public async Task<IActionResult> Definir(
+    Guid franqueadoId,
+    Guid produtoId,
+    [FromBody] DefinirEstoqueRequest body,
+    CancellationToken ct)
     {
-        await _sender.Send(new DefinirEstoqueCommand(franqueadoId, produtoId, quantidade), ct);
+        await _sender.Send(new DefinirEstoqueCommand(franqueadoId, produtoId, body.Quantidade, body.RowVersion), ct);
         return NoContent();
     }
 
@@ -70,6 +76,19 @@ public sealed class EstoquesController : ControllerBase
     CancellationToken ct = default)
     {
         var result = await _sender.Send(new ListarEstoquesComProdutoQuery(page, pageSize, franqueadoId, search), ct);
+        return Ok(result);
+    }
+    [HttpGet("{franqueadoId:guid}/{produtoId:guid}/movimentacoes")]
+    public async Task<IActionResult> Movimentacoes(
+    Guid franqueadoId,
+    Guid produtoId,
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] DateTimeOffset? de = null,
+    [FromQuery] DateTimeOffset? ate = null,
+    CancellationToken ct = default)
+    {
+        var result = await _sender.Send(new ListarMovimentacoesQuery(franqueadoId, produtoId, page, pageSize, de, ate), ct);
         return Ok(result);
     }
 }
