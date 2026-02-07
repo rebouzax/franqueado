@@ -9,6 +9,7 @@ public sealed class FranqueadoDbContext : DbContext
 
     public DbSet<Produto> Produtos => Set<Produto>();
     public DbSet<Estoque> Estoques => Set<Estoque>();
+    public DbSet<MovimentacaoEstoque> MovimentacoesEstoque => Set<MovimentacaoEstoque>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -14,4 +14,12 @@ public interface IEstoqueReadRepository
         int pageSize,
         Guid? franqueadoId,
         CancellationToken ct);
+    Task<int> CountWithProdutoAsync(Guid? franqueadoId, string? search, CancellationToken ct);
+
+    Task<IReadOnlyList<EstoqueProdutoItemDto>> ListPagedWithProdutoAsync(
+        int page,
+        int pageSize,
+        Guid? franqueadoId,
+        string? search,
+        CancellationToken ct);
 }

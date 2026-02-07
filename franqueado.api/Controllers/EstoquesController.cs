@@ -3,6 +3,7 @@ using Franqueado.Application.Abstractions.Repositories;
 using Franqueado.Application.Features.Estoques.Commands.DecrementarEstoque;
 using Franqueado.Application.Features.Estoques.Commands.IncrementarEstoque;
 using Franqueado.Application.Features.Estoques.Queries.ListarEstoques;
+using Franqueado.Application.Features.Estoques.Queries.ListarEstoquesComProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,5 +59,17 @@ public sealed class EstoquesController : ControllerBase
     {
         await _sender.Send(new DecrementarEstoqueCommand(franqueadoId, produtoId, body.Quantidade), ct);
         return NoContent();
+    }
+
+    [HttpGet("com-produto")]
+    public async Task<IActionResult> ListarComProduto(
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] Guid? franqueadoId = null,
+    [FromQuery] string? search = null,
+    CancellationToken ct = default)
+    {
+        var result = await _sender.Send(new ListarEstoquesComProdutoQuery(page, pageSize, franqueadoId, search), ct);
+        return Ok(result);
     }
 }

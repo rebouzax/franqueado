@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProdutoReadRepository, ProdutoReadRepository>();
         services.AddScoped<IEstoqueReadRepository, EstoqueReadRepository>();
         services.AddScoped<IEstoqueRepository, EstoqueRepository>();
+        services.AddScoped<IMovimentacaoEstoqueRepository, MovimentacaoEstoqueRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

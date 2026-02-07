@@ -15,6 +15,11 @@ public sealed class EstoqueConfiguration : IEntityTypeConfiguration<Estoque>
         builder.Property(x => x.Quantidade)
             .IsRequired();
 
+        builder.Property(x => x.RowVersion)
+            .IsRowVersion()
+            .IsConcurrencyToken();
+
+
         builder.HasIndex(x => new { x.FranqueadoId, x.ProdutoId }).IsUnique();
     }
 }

@@ -9,6 +9,9 @@ public sealed class Estoque
 
     public int Quantidade { get; private set; }
 
+    public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
+
+
     private Estoque() { } // EF
 
     public Estoque(Guid franqueadoId, Guid produtoId, int quantidade)

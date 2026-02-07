@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 
@@ -39,6 +40,15 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
                 title = "Conflict",
                 status = 409,
                 detail = ex.Message
+            });
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            await WriteAsync(context, HttpStatusCode.Conflict, new
+            {
+                title = "Concurrency conflict",
+                status = 409,
+                detail = "O registro foi alterado por outra operação. Recarregue e tente novamente."
             });
         }
         catch (Exception ex)

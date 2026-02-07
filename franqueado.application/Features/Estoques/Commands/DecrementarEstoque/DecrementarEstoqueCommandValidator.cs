@@ -9,5 +9,7 @@ public sealed class DecrementarEstoqueCommandValidator : AbstractValidator<Decre
         RuleFor(x => x.FranqueadoId).NotEmpty();
         RuleFor(x => x.ProdutoId).NotEmpty();
         RuleFor(x => x.Quantidade).GreaterThan(0);
+        RuleFor(x => x.Motivo).MaximumLength(200);
+        RuleFor(x => x.Usuario).MaximumLength(120);
     }
 }
