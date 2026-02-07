@@ -1,1 +1,6 @@
-<Solution />
+<Solution>
+  <Project Path="franqueado.api/franqueado.api.csproj" />
+  <Project Path="franqueado.application/franqueado.application.csproj" />
+  <Project Path="franqueado.domain/franqueado.domain.csproj" />
+  <Project Path="franqueado.infra/franqueado.infra.csproj" />
+</Solution>
