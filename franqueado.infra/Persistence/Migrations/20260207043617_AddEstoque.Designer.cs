@@ -4,6 +4,7 @@ using Franqueado.Infra.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace franqueado.infra.Persistence.Migrations
 {
     [DbContext(typeof(FranqueadoDbContext))]
-    partial class FranqueadoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260207043617_AddEstoque")]
+    partial class AddEstoque
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

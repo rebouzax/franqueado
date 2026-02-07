@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Franqueado.Application.Features.Produtos.Commands;
+namespace franqueado.application.Features.Produtos.Commands.CriarProduto;
 
 public sealed class CriarProdutoCommandValidator : AbstractValidator<CriarProdutoCommand>
 {

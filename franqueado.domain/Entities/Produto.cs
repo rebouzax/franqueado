@@ -13,4 +13,11 @@ public sealed class Produto
         Nome = nome.Trim();
         Sku = sku.Trim().ToUpperInvariant();
     }
+
+    public void Atualizar(string nome, string sku)
+    {
+        Nome = nome.Trim();
+        Sku = sku.Trim().ToUpperInvariant();
+    }
+
 }

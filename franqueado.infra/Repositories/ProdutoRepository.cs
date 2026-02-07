@@ -32,4 +32,11 @@ public sealed class ProdutoRepository : IProdutoRepository
             .Take(pageSize)
             .ToListAsync(ct);
     }
+
+    public Task<Produto?> GetByIdAsync(Guid id, CancellationToken ct)
+    => _db.Produtos.FirstOrDefaultAsync(x => x.Id == id, ct);
+
+    public void Remove(Produto produto)
+        => _db.Produtos.Remove(produto);
+
 }

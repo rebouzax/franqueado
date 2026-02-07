@@ -1,6 +1,6 @@
 ﻿using Franqueado.Application.Features.Produtos.Dtos;
 using MediatR;
 
-namespace Franqueado.Application.Features.Produtos.Queries;
+namespace franqueado.application.Features.Produtos.Queries.ObterProduto;
 
 public sealed record ObterProdutoPorIdQuery(Guid Id) : IRequest<ProdutoDto?>;

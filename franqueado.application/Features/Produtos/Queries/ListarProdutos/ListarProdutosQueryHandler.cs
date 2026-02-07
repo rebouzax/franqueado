@@ -3,7 +3,7 @@ using Franqueado.Application.Abstractions.Repositories;
 using Franqueado.Application.Features.Produtos.Dtos;
 using MediatR;
 
-namespace Franqueado.Application.Features.Produtos.Queries;
+namespace franqueado.application.Features.Produtos.Queries.ListarProdutos;
 
 public sealed class ListarProdutosQueryHandler : IRequestHandler<ListarProdutosQuery, PagedResult<ProdutoDto>>
 {

@@ -20,7 +20,6 @@ public sealed class ProdutoReadRepository : IProdutoReadRepository
 
         var s = search.Trim();
 
-        // LIKE para SQL Server (melhor que Contains em alguns cenários)
         return query.Where(p =>
             EF.Functions.Like(p.Nome, $"%{s}%") ||
             EF.Functions.Like(p.Sku, $"%{s}%"));
@@ -56,7 +55,6 @@ public sealed class ProdutoReadRepository : IProdutoReadRepository
         query = ApplySearch(query, search);
         query = ApplySort(query, sortBy, direction);
 
-        // ✅ projeção direta no banco
         return await query
             .Skip(skip)
             .Take(pageSize)
@@ -66,11 +64,22 @@ public sealed class ProdutoReadRepository : IProdutoReadRepository
 
     public Task<ProdutoDto?> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        // ✅ projeção direta no banco
         return _db.Produtos
             .AsNoTracking()
             .Where(p => p.Id == id)
             .Select(p => new ProdutoDto(p.Id, p.Nome, p.Sku))
             .FirstOrDefaultAsync(ct);
     }
+
+    public Task<ProdutoDto?> GetBySkuAsync(string sku, CancellationToken ct)
+    {
+        var normalized = sku.Trim().ToUpperInvariant();
+
+        return _db.Produtos
+            .AsNoTracking()
+            .Where(p => p.Sku == normalized)
+            .Select(p => new ProdutoDto(p.Id, p.Nome, p.Sku))
+            .FirstOrDefaultAsync(ct);
+    }
+
 }

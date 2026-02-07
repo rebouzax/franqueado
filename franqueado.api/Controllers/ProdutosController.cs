@@ -1,6 +1,11 @@
-﻿using Franqueado.Application.Abstractions.Sorting;
-using Franqueado.Application.Features.Produtos.Commands;
-using Franqueado.Application.Features.Produtos.Queries;
+﻿using franqueado.application.Features.Produtos.Commands.AtualizarProdouto;
+using franqueado.application.Features.Produtos.Commands.AtualizarProdutoParcial;
+using franqueado.application.Features.Produtos.Commands.CriarProduto;
+using franqueado.application.Features.Produtos.Commands.RemoverProduto;
+using franqueado.application.Features.Produtos.Queries.ListarProdutos;
+using franqueado.application.Features.Produtos.Queries.ObterProduto;
+using Franqueado.Api.Contracts.Produtos;
+using Franqueado.Application.Abstractions.Sorting;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,5 +44,35 @@ public sealed class ProdutosController : ControllerBase
     {
         var result = await _sender.Send(command, ct);
         return CreatedAtAction(nameof(ObterPorId), new { id = result.Id }, result);
+    }
+
+    [HttpGet("sku/{sku}")]
+    public async Task<IActionResult> ObterPorSku([FromRoute] string sku, CancellationToken ct)
+    {
+        var produto = await _sender.Send(new ObterProdutoPorSkuQuery(sku), ct);
+        return produto is null ? NotFound() : Ok(produto);
+    }
+
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Atualizar([FromRoute] Guid id, [FromBody] AtualizarProdutoCommand body, CancellationToken ct)
+    {
+        var cmd = body with { Id = id };
+        await _sender.Send(cmd, ct);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> AtualizarParcial([FromRoute] Guid id, [FromBody] AtualizarProdutoPatchRequest body, CancellationToken ct)
+    {
+        await _sender.Send(new AtualizarProdutoParcialCommand(id, body.Nome, body.Sku), ct);
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Remover([FromRoute] Guid id, CancellationToken ct)
+    {
+        await _sender.Send(new RemoverProdutoCommand(id), ct);
+        return NoContent();
     }
 }

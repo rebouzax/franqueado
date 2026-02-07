@@ -3,7 +3,7 @@ using Franqueado.Application.Abstractions.Sorting;
 using Franqueado.Application.Features.Produtos.Dtos;
 using MediatR;
 
-namespace Franqueado.Application.Features.Produtos.Queries;
+namespace franqueado.application.Features.Produtos.Queries.ListarProdutos;
 
 public sealed record ListarProdutosQuery(
     int Page = 1,

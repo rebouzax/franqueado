@@ -9,4 +9,7 @@ public interface IProdutoRepository
 
     Task<int> CountAsync(CancellationToken ct);
     Task<IReadOnlyList<Produto>> ListPagedAsync(int page, int pageSize, CancellationToken ct);
+    Task<Produto?> GetByIdAsync(Guid id, CancellationToken ct);
+    void Remove(Produto produto);
+
 }

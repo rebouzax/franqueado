@@ -4,7 +4,7 @@ using Franqueado.Domain.Entities;
 using Franqueado.Domain.Repositories;
 using MediatR;
 
-namespace Franqueado.Application.Features.Produtos.Commands;
+namespace franqueado.application.Features.Produtos.Commands.CriarProduto;
 
 public sealed class CriarProdutoCommandHandler : IRequestHandler<CriarProdutoCommand, ProdutoDto>
 {

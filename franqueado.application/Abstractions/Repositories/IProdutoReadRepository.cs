@@ -16,4 +16,6 @@ public interface IProdutoReadRepository
         CancellationToken ct);
 
     Task<ProdutoDto?> GetByIdAsync(Guid id, CancellationToken ct);
+    Task<ProdutoDto?> GetBySkuAsync(string sku, CancellationToken ct);
+
 }

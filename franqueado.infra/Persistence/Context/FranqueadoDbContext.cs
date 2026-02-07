@@ -8,6 +8,8 @@ public sealed class FranqueadoDbContext : DbContext
     public FranqueadoDbContext(DbContextOptions<FranqueadoDbContext> options) : base(options) { }
 
     public DbSet<Produto> Produtos => Set<Produto>();
+    public DbSet<Estoque> Estoques => Set<Estoque>();
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
